@@ -1,2 +1,3 @@
 # DUI
-A simple DUI test file. It hasn't got any purpose.
+它完全用print及一些基础库(sys,os,re)制作，当你使用时不需要考虑太多兼容性问题，你就可以获得一个比较美观的界面。
+此库尚未完善，只写了一点内容，以后会向更多功能进行制作。有兴趣的同学可联系我Q：107144508
