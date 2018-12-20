@@ -1,0 +1,139 @@
+#-*-coding:utf8;-*-
+#qpy:3
+#qpy:console
+#python3
+__author__='Lettle'
+import os,sys,re
+#基础方法
+def slen(value):
+    length =len(value)
+    utf8_length =len(value.encode('utf-8'))
+    length =(utf8_length -length)/2+length
+    return int(length)
+#控件库-----------------------------------------------------------
+class Window():
+    def __init__(self,title,mark):
+        self.mark = mark
+        self.title = title
+        self.sys = "Linux"
+        self.height = 20
+        self.width = 40
+        self.widget = []
+    def set_sys(self,sys):
+        self.sys = sys
+    def set_size(self,height,width):
+        self.height = int(height)
+        self.width = int(width)
+    def add_widget(self,widget_name,widget_location,way='L',text='widget',mark=0):
+        for i in range(1):        #更新控件库记得修改这里---------
+            if widget_name == "line" or widget_name == 'Line':
+                widget = Line(widget_location-1)
+            elif widget_name == 'TextLine':
+                widget = TextLine(text,way,widget_location-1)
+            elif widget_name == 'Button':
+                widget = Button(text,way,widget_location-1,b_mark=mark)
+        self.widget.append(widget)
+    def build(self):
+        if self.sys == "Windows":  #判断系统进行清屏
+            os.system("cls")
+        else:
+            os.system("clear")
+        def build_fbte(i):        #fbte:From begining to end
+            if i == 0:
+                print("╔"+"═"*2+self.title+"═"*(self.width-7-slen(self.title))+'-'+'□'+'x'+"╗")
+                return False
+            elif i == self.height-1:
+                print("╚"+"═"*(self.width-2)+"╝")
+                return False
+            else:
+                return True
+        widget_a = len(self.widget)
+        if widget_a == 0:        #判断有无控件
+            for i in range(self.height):
+                if build_fbte(i):
+                    print("║"+" "*(self.width-2)+"║")
+        else:
+            widget_task = self.widget
+            a = 0
+            for i in range(self.height):
+                if build_fbte(i):
+                    if widget_a != 0:
+                        for ii in range(widget_a):
+                            if widget_task[ii].location == i:    #查询当前控件任务的位置
+                                if widget_task[ii].mark == 0:
+                                    print("╠"+"═"*(self.width-2)+"╣")
+                                elif widget_task[ii].mark == 1:
+                                    if slen(widget_task[ii].text)>(self.width-2):
+                                        text = re.findall(r'.{'+str(self.width-2)+r'}',widget_task[ii].text)
+                                        print("║"+text[0]+"║")
+                                    elif widget_task[ii].way == 'L':
+                                        print("║"+widget_task[ii].text+' '*(self.width-2-slen(widget_task[ii].text))+"║")
+                                    elif widget_task[ii].way == 'C':
+                                        iii = int((self.width-2-slen(widget_task[ii].text))/2)
+                                        inte = slen(widget_task[ii].text)
+                                        print("║"+' '*iii+widget_task[ii].text+' '*(self.width-2-iii-inte)+"║")
+                                    elif widget_task[ii].way == 'R':
+                                        print("║"+(r'{:>'+str(self.width-2)+r'}').format(widget_task[ii].text)+"║")
+                                elif widget_task[ii].mark == 2:
+                                    pass
+                                elif widget_task[ii].mark == 3:
+                                    if slen(widget_task[ii].text)>(self.width-2):
+                                        text = re.findall(r'.{'+str(self.width-2)+r'}',widget_task[ii].text)
+                                        print("║"+'\033[0;32;40m%s\033[0m'%text[0]+"║")
+                                    elif widget_task[ii].way == 'L':
+                                        print("║"+'\033[0;32;40m%s\033[0m'%widget_task[ii].text+' '*(self.width-2-slen(widget_task[ii].text))+"║")
+                                    elif widget_task[ii].way == 'C':
+                                        iii = int((self.width-2-slen(widget_task[ii].text))/2)
+                                        inte = slen(widget_task[ii].text)
+                                        print("║"+' '*iii+'\033[0;32;40m%s\033[0m'%widget_task[ii].text+' '*(self.width-2-iii-inte)+"║")
+                                    elif widget_task[ii].way == 'R':
+                                        print("║"+(r'{:>'+str(self.width-2)+r'}').format('\033[0;32;40m%s\033[0m'%widget_task[ii].text)+"║")
+                                del widget_task[ii]
+                                widget_a = len(widget_task)
+                                a = 1
+                                break
+                        if a != 1:
+                            print("║"+" "*(self.width-2)+"║")
+                        a = 0
+                    else:
+                        print("║"+" "*(self.width-2)+"║")
+
+class Line():
+    def __init__(self,location):
+        self.mark = 0
+        self.location = location
+class TextLine():
+    def __init__(self,text,way,location):
+        self.mark = 1
+        self.text = text
+        self.way = way
+        self.location = location
+class Form():
+    def __init__(self,th,data,way,location):
+        self.mark = 2
+        self.th = th
+        self.way = way
+        self.location = location
+class Button():
+    def __init__(self,text,way,location,b_mark):
+        self.mark = 3
+        self.location = location
+        self.text = text
+        self.way = way
+        self.mode = 0
+        self.b_mark = b_mark
+#主框架-----------------------------------------------------------
+class TestUIFrame():
+    def __init__(self):
+        self.windows = []
+    def add_window(self,wd):
+        self.windows.append(wd)
+    def build(self,mark=0):
+        self.windows[mark].build()
+
+#用例-----------------------------------------------
+if __name__=="__main__":
+    t = TestUIFrame()
+    main_w = Window('主窗口',0)
+    t.add_window(main_w)
+    t.build(0)
