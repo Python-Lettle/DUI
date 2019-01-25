@@ -4,6 +4,7 @@
 #python3
 __author__='Lettle'
 import os,sys,re
+from ctypes import *
 #基础方法
 def slen(value):
     length =len(value)
@@ -60,9 +61,9 @@ class Window():
                     if widget_a != 0:
                         for ii in range(widget_a):
                             if widget_task[ii].location == i:    #查询当前控件任务的位置
-                                if widget_task[ii].mark == 0:
+                                if widget_task[ii].mark == 0:    #分隔条
                                     print("╠"+"═"*(self.width-2)+"╣")
-                                elif widget_task[ii].mark == 1:
+                                elif widget_task[ii].mark == 1:  #文本条
                                     if slen(widget_task[ii].text)>(self.width-2):
                                         text = re.findall(r'.{'+str(self.width-2)+r'}',widget_task[ii].text)
                                         print("║"+text[0]+"║")
@@ -74,9 +75,9 @@ class Window():
                                         print("║"+' '*iii+widget_task[ii].text+' '*(self.width-2-iii-inte)+"║")
                                     elif widget_task[ii].way == 'R':
                                         print("║"+(r'{:>'+str(self.width-2)+r'}').format(widget_task[ii].text)+"║")
-                                elif widget_task[ii].mark == 2:
+                                elif widget_task[ii].mark == 2:  #表格
                                     pass
-                                elif widget_task[ii].mark == 3:
+                                elif widget_task[ii].mark == 3:  #按钮
                                     if slen(widget_task[ii].text)>(self.width-2):
                                         text = re.findall(r'.{'+str(self.width-2)+r'}',widget_task[ii].text)
                                         print("║"+'\033[0;32;40m%s\033[0m'%text[0]+"║")
@@ -122,18 +123,37 @@ class Button():
         self.way = way
         self.mode = 0
         self.b_mark = b_mark
+class Listener():
+    def __init__(self,run):
+        self.mark = 4
+        self.running = False
+    def run(self):
+        c = cdll.LoadLibrary(os.getcwd()+"/getchar.so")
+        string = ' '
+        while self.run:
+            string = c.get_char()
+            sys.stdout.write('%c'%string)
+            sys.stdout.flush()
+            if string == 113: #q键退出
+                sys.stdout.write('\n')
+                self.run = False
 #主框架-----------------------------------------------------------
-class TestUIFrame():
+class Frame():
     def __init__(self):
         self.windows = []
+        self.Listener = Listener(False)
     def add_window(self,wd):
         self.windows.append(wd)
+    def listen(self):
+        self.Listener.running = True
+        self.Listener.run()
     def build(self,mark=0):
         self.windows[mark].build()
 
 #用例-----------------------------------------------
 if __name__=="__main__":
-    t = TestUIFrame()
+    t = Frame()
     main_w = Window('主窗口',0)
     t.add_window(main_w)
     t.build(0)
+    t.listen()
