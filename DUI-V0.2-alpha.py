@@ -25,14 +25,14 @@ class Window():
     def set_size(self,height,width):
         self.height = int(height)
         self.width = int(width)
-    def add_widget(self,widget_name,widget_location,way='L',text='widget',cursor_index=0):
+    def add_widget(self,widget_name,widget_location,way='L',text='widget',cursor_index=0,onclick_sen="pass"):
         for i in range(1):        #更新控件库记得修改这里---------
             if widget_name == "line" or widget_name == 'Line':
                 widget = Line(widget_location-1)
             elif widget_name == 'TextLine':
                 widget = TextLine(text,way,widget_location-1)
             elif widget_name == 'Button':
-                widget = Button(text,way,widget_location-1,cursor_index=cursor_index)
+                widget = Button(text,way,widget_location-1,cursor_index=cursor_index,onclick_sent=onclick_sen)
         self.widget.append(widget)
     def buildW(self,Frame):
         if self.sys == "Windows":  #判断系统进行清屏
@@ -56,6 +56,7 @@ class Window():
                         widget_task[i].select=True
                     else:
                         widget_task[i].select=False
+
         widget_a = len(self.widget)
         if widget_a == 0:        #判断有无控件
             for i in range(self.height):
@@ -137,20 +138,21 @@ class Form():
         self.way = way
         self.location = location
 class Button():
-    def __init__(self,text,way,location,cursor_index):
+    def __init__(self,text,way,location,cursor_index,onclick_sent="pass"):
         self.mark = 3
         self.select = False
         self.location = location
         self.text = text
         self.way = way
         self.cursor_index = cursor_index
-    def onclick():
-        pass
+        self.onclicksent = onclick_sent
+    def onclick(self):
+        eval(self.onclicksent)
 class Listener():
     def __init__(self,run):
         self.mark = 4
         self.running = False
-    def run(self,Fram):
+    def run(self,Fram,mark=0):
         c = cdll.LoadLibrary(os.getcwd()+"/getchar.so")
         while self.running:
             key = chr(c.get_char())
@@ -166,6 +168,12 @@ class Listener():
                 sys.stdout.write('\n')
                 break
             Fram.build(0)
+            if key == "y":
+                window_widgets = Fram.windows[mark].widget
+                for i in range(len(window_widgets)):
+                    if window_widgets[i].mark == 3:
+                        if window_widgets[i].select:
+                            window_widgets[i].onclick()
 #主框架-----------------------------------------------------------
 class Frame():
     def __init__(self):
@@ -175,9 +183,9 @@ class Frame():
         self.Button_num = 0
     def add_window(self,wd):
         self.windows.append(wd)
-    def listen(self,mark=0):
+    def listen(self,mark_=0):
         self.Listener.running = True
-        self.Listener.run(self)
+        self.Listener.run(self,mark=mark_)
     def build(self,mark=0):
         self.windows[mark].buildW(self)
 
@@ -188,9 +196,9 @@ if __name__=="__main__":
     main_w.add_widget('TextLine',3,way='C',text='DUI测试界面')
     main_w.add_widget('line',4)
     main_w.add_widget('TextLine',5,text='你可以用w向上s向下,y键确认,q键退出')
-    main_w.add_widget('Button',6,text='测试按钮1',cursor_index=0)
-    main_w.add_widget('Button',7,text='测试按钮2',cursor_index=1)
-    main_w.add_widget('Button',8,text='测试按钮3',cursor_index=2)
+    main_w.add_widget('Button',6,text='测试按钮1',cursor_index=0,onclick_sen=r"print('1号成功')")
+    main_w.add_widget('Button',7,text='测试按钮2',cursor_index=1,onclick_sen=r"print('2号成功')")
+    main_w.add_widget('Button',8,text='测试按钮3',cursor_index=2,onclick_sen=r"print('3号成功')")
     t.add_window(main_w)
     t.build(0)
     t.listen(0)
