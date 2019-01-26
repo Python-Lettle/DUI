@@ -25,14 +25,14 @@ class Window():
     def set_size(self,height,width):
         self.height = int(height)
         self.width = int(width)
-    def add_widget(self,widget_name,widget_location,way='L',text='widget',mark=0):
+    def add_widget(self,widget_name,widget_location,way='L',text='widget',cursor_index=0):
         for i in range(1):        #更新控件库记得修改这里---------
             if widget_name == "line" or widget_name == 'Line':
                 widget = Line(widget_location-1)
             elif widget_name == 'TextLine':
                 widget = TextLine(text,way,widget_location-1)
             elif widget_name == 'Button':
-                widget = Button(text,way,widget_location-1,b_mark=mark)
+                widget = Button(text,way,widget_location-1,cursor_index=cursor_index)
         self.widget.append(widget)
     def build(self):
         if self.sys == "Windows":  #判断系统进行清屏
@@ -78,17 +78,21 @@ class Window():
                                 elif widget_task[ii].mark == 2:  #表格
                                     pass
                                 elif widget_task[ii].mark == 3:  #按钮
+                                    if widget_task[ii].select:
+                                        color = '\033'
+                                    else:
+                                        color = '\030'
                                     if slen(widget_task[ii].text)>(self.width-2):
                                         text = re.findall(r'.{'+str(self.width-2)+r'}',widget_task[ii].text)
-                                        print("║"+'\033[0;32;40m%s\033[0m'%text[0]+"║")
+                                        print(color+"[1;31;40m%s"%text+color+"[0m")  
                                     elif widget_task[ii].way == 'L':
-                                        print("║"+'\033[0;32;40m%s\033[0m'%widget_task[ii].text+' '*(self.width-2-slen(widget_task[ii].text))+"║")
+                                        print(color+'[0;32;40m'+"║"+widget_task[ii].text+' '*(self.width-2-slen(widget_task[ii].text))+"║"+"[0m")
                                     elif widget_task[ii].way == 'C':
                                         iii = int((self.width-2-slen(widget_task[ii].text))/2)
                                         inte = slen(widget_task[ii].text)
-                                        print("║"+' '*iii+'\033[0;32;40m%s\033[0m'%widget_task[ii].text+' '*(self.width-2-iii-inte)+"║")
+                                        print(color+'[0;32;40m'"║"+' '*iii+widget_task[ii].text+color+'[0m'+' '*(self.width-2-iii-inte)+"║"+"[0m")
                                     elif widget_task[ii].way == 'R':
-                                        print("║"+(r'{:>'+str(self.width-2)+r'}').format('\033[0;32;40m%s\033[0m'%widget_task[ii].text)+"║")
+                                        print(color+'[0;32;40m'"║"+(r'{:>'+str(self.width-2)+r'}').format(widget_task[ii].text)+"║"+"[0m")
                                 del widget_task[ii]
                                 widget_a = len(widget_task)
                                 a = 1
@@ -116,13 +120,15 @@ class Form():
         self.way = way
         self.location = location
 class Button():
-    def __init__(self,text,way,location,b_mark):
+    def __init__(self,text,way,location,cursor_index):
         self.mark = 3
+        self.select = False
         self.location = location
         self.text = text
         self.way = way
-        self.mode = 0
-        self.b_mark = b_mark
+        self.cursor_index = cursor_index
+    def onclick():
+        pass
 class Listener():
     def __init__(self,run):
         self.mark = 4
@@ -142,6 +148,7 @@ class Frame():
     def __init__(self):
         self.windows = []
         self.Listener = Listener(False)
+        self.cursor = 0
     def add_window(self,wd):
         self.windows.append(wd)
     def listen(self):
@@ -154,6 +161,11 @@ class Frame():
 if __name__=="__main__":
     t = Frame()
     main_w = Window('主窗口',0)
+    main_w.add_widget('TextLine',3,way='C',text='DUI测试界面')
+    main_w.add_widget('line',4)
+    main_w.add_widget('TextLine',5,text='你可以用w向上s向下,y键确认')
+    main_w.add_widget('Button',6,text='测试按钮1',cursor_index=0)
+    main_w.add_widget('Button',7,text='测试按钮2',cursor_index=1)
     t.add_window(main_w)
     t.build(0)
     t.listen()
