@@ -1,0 +1,4 @@
+include README.rst
+include LICENSE
+recursive-include xuzhao_markdown/static *
+recursive-include xuzhao_markdown/templates *
