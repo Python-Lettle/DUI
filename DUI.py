@@ -19,21 +19,21 @@ class Window():
         self.sys = "Linux"
         self.height = 20
         self.width = 40
-        self.widget = []
+        self.widget = {}
     def set_sys(self,sys):
         self.sys = sys
     def set_size(self,height,width):
         self.height = int(height)
         self.width = int(width)
-    def add_widget(self,widget_name,widget_location,way='L',text='widget',cursor_index=0,onclick_sen="pass"):
+    def add_widget(self,widget_name,widget_location,way='L',text='widget',cursor_index=0,onclick_sen="pass",wi_id=None):
         for i in range(1):        #更新控件库记得修改这里---------
             if widget_name == "line" or widget_name == 'Line':
-                widget = Line(widget_location-1)
+                widget = Line(widget_location-1,w_id=wi_id)
             elif widget_name == 'TextLine':
-                widget = TextLine(text,way,widget_location-1)
+                widget = TextLine(text,way,widget_location-1,w_id=wi_id)
             elif widget_name == 'Button':
-                widget = Button(text,way,widget_location-1,cursor_index=cursor_index,onclick_sent=onclick_sen)
-        self.widget.append(widget)
+                widget = Button(text,way,widget_location-1,cursor_index=cursor_index,onclick_sent=onclick_sen,w_id=wi_id)
+        self.widget[wi_id]=widget
     def buildW(self,Frame):
         if self.sys == "Windows":  #判断系统进行清屏
             os.system("cls")
@@ -58,12 +58,14 @@ class Window():
                         widget_task[i].select=False
 
         widget_a = len(self.widget)
+        widget_task = []
         if widget_a == 0:        #判断有无控件
             for i in range(self.height):
                 if build_fbte(i):
                     print("║"+" "*(self.width-2)+"║")
         else:
-            widget_task = self.widget
+            for key,value in self.widget.items():
+                widget_task.append(value)
             a = 0 #控制下面空白区域的显示
             Button_num = 0
             refresh_button()
@@ -94,7 +96,7 @@ class Window():
                                     if widget_task[ii].select == True:
                                         color = '32'
                                     elif widget_task[ii].select == False:
-                                        color = '30'
+                                        color = '37'
                                     if slen(widget_task[ii].text)>(self.width-2):
                                         text = re.findall(r'.{'+str(self.width-2)+r'}',widget_task[ii].text)
                                         print(color+"[1;31;40m%s"%text+color+"[0m")  
@@ -122,23 +124,23 @@ class Window():
                         print("║"+" "*(self.width-2)+"║")
 
 class Line():
-    def __init__(self,location):
+    def __init__(self,location,w_id=None):
         self.mark = 0
         self.location = location
 class TextLine():
-    def __init__(self,text,way,location):
+    def __init__(self,text,way,location,w_id=None):
         self.mark = 1
         self.text = text
         self.way = way
         self.location = location
 class Form():
-    def __init__(self,th,data,way,location):
+    def __init__(self,th,data,way,location,w_id=None):
         self.mark = 2
         self.th = th
         self.way = way
         self.location = location
 class Button():
-    def __init__(self,text,way,location,cursor_index,onclick_sent="pass"):
+    def __init__(self,text,way,location,cursor_index,onclick_sent="pass",w_id=None):
         self.mark = 3
         self.select = False
         self.location = location
@@ -169,7 +171,9 @@ class Listener():
                 break
             Fram.build(0)
             if key == confirm_key: #确认键
-                window_widgets = Fram.windows[mark].widget
+                window_widgets = []
+                for keys,value in Fram.windows[mark].widget.items():
+                    window_widgets.append(value)
                 for i in range(len(window_widgets)):
                     if window_widgets[i].mark == 3:
                         if window_widgets[i].select:
@@ -185,23 +189,7 @@ class Frame():
         self.windows.append(wd)
     def listen(self,mark_=0,confirm="y",kill="q"):
         self.Listener.running = True
-        self.Listener.run(self,mark=mark_,confirm_key=comfirm,kill_key=kill)
+        self.Listener.run(self,mark=mark_,confirm_key=confirm,kill_key=kill)
     def build(self,mark=0):
         self.windows[mark].buildW(self)
-
-#用例-----------------------------------------------
-if __name__=="__main__":
-    #用例-----------------------------------------------
-if __name__=="__main__":
-    t = Frame()
-    main_w = Window('主窗口',0)
-    main_w.add_widget('TextLine',3,way='C',text='DUI测试界面')
-    main_w.add_widget('line',4)
-    main_w.add_widget('TextLine',5,text='你可以用w向上s向下,y键确认,q键退出')
-    main_w.add_widget('Button',6,text='测试按钮1',cursor_index=0,onclick_sen=r"print('1号成功')")
-    main_w.add_widget('Button',7,text='测试按钮2',cursor_index=1,onclick_sen=r"print('2号成功')")
-    main_w.add_widget('Button',8,text='测试按钮3',cursor_index=2,onclick_sen=r"print('3号成功')")
-    t.add_window(main_w)
-    t.build(0)
-    t.listen(0,confirm="y",kill="q")
 
