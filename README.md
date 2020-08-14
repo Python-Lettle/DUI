@@ -45,19 +45,21 @@ DUI.showTestWindow()
 +----------------------------+
 ```
 
-这样的窗口（应该是对齐的）
+这样的窗口（在Windows cmd中应该是对齐的）
+
+
 
 ## 标准DUI界面
 
 ### Frame
 
 ​	<br>Frame是界面的框架，用来写配置信息，如系统类型等。
-    <br>Frame把Widget, Window, Listener, Controller, Alert集成在一起进行操作
+​    <br>Frame把Widget, Window, Listener, Controller, Alert集成在一起进行操作
 
 #### Window
 
 ​	<br>Window是一个DUI界面最重要部分，它由开发者自行设计。一个DUI界面可以有多个Window且可以灵活地互相切换，由用户操作按钮来操控。
-    <br>Window实际上可以单独使用,所有方法都是可以直接调用执行的,即脱离Frame单独显示
+​    <br>Window实际上可以单独使用,所有方法都是可以直接调用执行的,即脱离Frame单独显示
 #### Listener
 
 ​	Listener是一个DUI界面用户操作部分监听工具，按钮、输入框等控件由Listener控制，最后返回给Frame。(此功能尚未完善)

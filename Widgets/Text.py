@@ -7,8 +7,8 @@ from DUI.Widgets import Widget
 from DUI.bin import *
 
 class Text(Widget):
-	def __init__(self, text="", type=0):
-		super().__init__("Text")
+	def __init__(self, text="", type=0, id=None):
+		super().__init__("Text", id)
 		self.text = text
 		# 0 左对齐 1 居中 2 右对齐
 		self.type = type

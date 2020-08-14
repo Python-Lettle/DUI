@@ -17,29 +17,48 @@
 from DUI.Frames import *
 from DUI.Widgets import *
 from DUI.bin import *
-
+from random import randint
 
 def __version__():
 	return "1.0.1"
 
+def guess():
+	an = randint(0, 10)
+	while True:
+		res = int(input("请输入要猜的数: "))
+		if res == an:
+			print("正确！")
+			return True
+		else:
+			print("错了 重新猜吧")
 
 def showTestWindow():
-	f = Frame("w")
+	f = Frame("w")  # 参数 "w" 代表Windows系统格式
+
 	mainWindow = Window("主界面")
+	mainWindow.addWidget(2, Text("DUI库的测试窗口", 0))
+	mainWindow.addWidget(4, Text("版本:V0.1.0", 1))
+	mainWindow.addWidget(6, Text("作者:Lettle", 1))
+	mainWindow.addWidget(8, Text("一起学习?加作者QQ:1071445082", 1))
+	mainWindow.addWidget(10, Text("---By Lettle", 2))
 
-	text1 = Text("DUI库的测试窗口", 0)
-	text2 = Text("版本:V0.1.0", 1)
-	text3 = Text("作者:Lettle", 1)
-	text4 = Text("一起学习?加作者QQ:1071445082", 1)
-	text5 = Text("---By Lettle", 2)
-	Button1 = Button("测试按钮1")
-
-	mainWindow.addWidget(2, text1)
-	mainWindow.addWidget(4, text2)
-	mainWindow.addWidget(6, text3)
-	mainWindow.addWidget(8, text4)
-	mainWindow.addWidget(10, text5)
-	mainWindow.addWidget(11, Button1)
+	mainWindow.addWidget(11, Button("测试按钮1"))
+	mainWindow.addWidget(12, Button("测试按钮2"))
+	mainWindow.addWidget(13, Button("测试按钮3"))
 
 	f.addWindow(mainWindow, 0)
+
+	dict = \
+		{
+			"guess": guess,
+			"quit": quit,
+			"g": guess,
+			"w": mainWindow.up,
+			"s": mainWindow.down,
+			"y": mainWindow.confirm
+		}
+	listen = Listener(0)
+	listen.setDict(dict)
+	f.setListener(listen)
+
 	f.showWindow(0)
