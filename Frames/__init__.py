@@ -6,6 +6,7 @@
 
 '''
 	这是一个标准的Frame框架,可以从这里引入以下内容:
+		@ Frame
 		@ Window
 		@ Alert
 		@ Listener

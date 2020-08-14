@@ -3,9 +3,9 @@
 #__author__ = "Lettle"
 #QQ: 1071445082
 #fileName: Window.py
-
 import os
-from DUI.bin.func import *
+
+from DUI.bin import *
 
 # defaultSkin4Windows = [
 #     "┌─┐",
@@ -38,6 +38,7 @@ class lineMaker:
         self.height = height         # int
         self.system = system         # int
         self.skin = SkinMaker(skin)  # 是一个皮肤类型的class
+        self.pointer = 1             # int 指针:用来指向一个可操作性类型控件
         self.widgets = []            # 是一个包含多个tuple(line,widget)成员的List
 
     def __iter__(self):
@@ -73,8 +74,11 @@ class lineMaker:
                 else:
                     widget_thisLine = None
             if widget_thisLine:  #如果获取到了
-                # 获得控件返回的文本
-                textThisLine = widget_thisLine.getText(self.width, self.system)
+                if widget_thisLine.getType == "Button":
+                    pass
+                else:
+                    # 获得控件返回的文本
+                    textThisLine = widget_thisLine.print(self.width, self.system)
             else:
                 textThisLine = " " * (self.width - 2)
             # 组装窗口界面
@@ -92,25 +96,75 @@ class lineMaker:
 
     def addWidgets(self,widget):
         self.widgets.append(widget)
+    def getWidgets(self):
+        return self.widgets
 
     def setSystem(self, system):
         self.system = system
 
 class Window:
-    def __init__(self,title,width=30,height=20,system="Windows",skin=defaultSkin4Windows):
-        self.lineMaker = lineMaker(title,width,height,system,skin)
+    def __init__(self,title,width=30,height=20,system=0,skin=defaultSkin4Windows):
+        self.lineMaker = lineMaker(title,width,height,system,skin)  #渲染器对象   iter
+        self.pointer = None                                         #当前控件指针 int
+        self.pointCondition = True
+        self.buttonIndex = None           #按钮控件在 linemaker 中的位置
+
     def addWidget(self,line,widget):
-        widget.system = self.lineMaker.system
+        if widget.getType() == "Button" and self.pointCondition:
+            '''
+                如果是按钮 则将指针指向按钮并且添加控件不再改变
+            '''
+            widget.pointed()
+            self.pointer = line
+            self.pointCondition = None
+            self.buttonIndex = len(self.lineMaker.getWidgets())
+            print("sout: button add!")
+        else:
+            widget.system = self.lineMaker.system
         self.lineMaker.addWidgets(tuple([line,widget]))
 
+    '''
+        为窗口设置显示模式
+    '''
     def setSystem(self, system):
         self.lineMaker.setSystem(system)
 
+    '''
+        页面指针控制
+    '''
+    def up(self):
+        widgets = self.lineMaker.getWidgets()
+        for i in widgets[:self.buttonIndex]:
+            if i[1].getType() == "Button":
+                #如果当前指针上面还有按钮
+                self.lineMaker.widgets[self.buttonIndex][1].leave()
+                self.buttonIndex -= 1
+                self.lineMaker.widgets[self.buttonIndex][1].pointed()
+                return
+
+    def down(self):
+        widgets = self.lineMaker.getWidgets()
+        for i in widgets[self.buttonIndex+1:]:
+            if i[1].getType() == "Button":
+                #如果当前指针下面还有按钮
+                self.lineMaker.widgets[self.buttonIndex][1].leave()
+                self.buttonIndex += 1
+                self.lineMaker.widgets[self.buttonIndex][1].pointed()
+                return
+    #按钮确认键
+    def confirm(self):
+        pass
+
+    '''
+        显示窗口
+    '''
     def showWindow(self):
         if self.lineMaker.system == 0:
             os.system("cls")
         else:
-            os.system("clean")
+            os.system("clear")
+
+        #使用迭代器显示
         myiter = iter(self.lineMaker)
         for text in myiter:
             print(text)

@@ -2,25 +2,38 @@
 # -*- coding:utf-8 -*-
 #__author__ = "Lettle"
 #QQ: 1071445082
-#fileName: *.py
+#fileName: Frame.py
+
+from DUI.Frames.Listener import *
 
 class Frame:
     def __init__(self,system="Windows"):
-        self.windows = []
+        self.windows = []  #储存window
+        self.alert = None
+        self.listener = Listener(0)
 
+        #判断显示格式
         s = system.lower()
         if s == "windows" or s == "win" or s == "w":
             self.system = 0
         elif s == "linux" or s == "l":
             self.system = 1
 
-    def __del__(self):
-        # print("Frame关闭")
-        pass
-
+    '''
+        设置窗口皮肤
+    '''
     def setSkin(self,skinList):
         self.skin = skinList
 
+    '''
+        传入一个自定义的Listener
+    '''
+    def setListener(self, listener):
+        self.listener = listener
+
+    '''
+        添加新的窗口
+    '''
     def addWindow(self,window,index):
         try:
             self.windows[index] = window
@@ -29,10 +42,14 @@ class Frame:
             index = self.windows.__len__()-1
         self.windows[index].setSystem(self.system)
 
-        # print("{}号窗口已经加载".format(index))
+    def delWindow(self,index):
+        del self.windows[index]
 
-    def testMessage(self):
-        print("成功导入此Frame!")
-
+    '''
+        调用窗口的显示方法来切换窗口
+    '''
     def showWindow(self,index):
         self.windows[index].showWindow()
+        while True:
+            self.listener.run()
+            self.windows[index].showWindow()
