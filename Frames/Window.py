@@ -97,7 +97,7 @@ class LineMaker:
 
         elif nowHeight == 1:
             # 如果当前是第一行
-            textThisLine = skin.LeftUp + skin.HorizontalLine + self.title + skin.HorizontalLine*(self.width - 5 - slen(self.title))+ "X"+ skin.HorizontalLine + skin.RightUp
+            textThisLine = skin.LeftUp + skin.HorizontalLine + self.title + skin.HorizontalLine*(self.width - 5 - slen(self.title)) + "X" + skin.HorizontalLine + skin.RightUp
 
         elif nowHeight == self.height:
             # 如果是最后一行
@@ -149,9 +149,9 @@ class Window:
             for i in widgets[:self.buttonIndex]:
                 if i[1].getType() == "Button":
                     #如果当前指针上面还有按钮
-                    self.lineMaker.widgets[self.buttonIndex][1].leave()
+                    self.lineMaker.getWidgets()[self.buttonIndex][1].leave()
                     self.buttonIndex -= 1
-                    self.lineMaker.widgets[self.buttonIndex][1].pointed()
+                    self.lineMaker.getWidgets()[self.buttonIndex][1].pointed()
                     return
 
     def down(self):
@@ -160,9 +160,9 @@ class Window:
             for i in widgets[self.buttonIndex+1:]:
                 if i[1].getType() == "Button":
                     #如果当前指针下面还有按钮
-                    self.lineMaker.widgets[self.buttonIndex][1].leave()
+                    self.lineMaker.getWidgets()[self.buttonIndex][1].leave()
                     self.buttonIndex += 1
-                    self.lineMaker.widgets[self.buttonIndex][1].pointed()
+                    self.lineMaker.getWidgets()[self.buttonIndex][1].pointed()
                     return
     #按钮确认键
     def confirm(self):
