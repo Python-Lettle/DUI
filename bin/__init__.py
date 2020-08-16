@@ -4,4 +4,4 @@
 #QQ: 1071445082
 #fileName: __init__.py
 
-from DUI.bin.func import *
+from DUI.bin.util import *

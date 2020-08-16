@@ -8,18 +8,22 @@ from DUI.Widgets import Text
 from DUI.bin import *
 
 class Button(Text):
-	def __init__(self, text="", mode=False, id=None):
+	def __init__(self, text="", mode=False, id=None, onClick=None):
 		super().__init__(text, id=id)
-		self.isPointed = mode
 		super(Text, self).setType("Button")
+		self.isPointed = mode     #指针是否指向当前Button bools
+		self.onClick = onClick    #点击事件
 
 	def pointed(self):
 		self.isPointed = True
 	def leave(self):
 		self.isPointed = False
 
-	def press(self, func):
-		func()
+	def setOnClick(self, func):
+		self.onClick = func
+
+	def press(self):
+		self.onClick()
 
 	'''
 		绘制按钮  mode: 0 未选中 1 选中

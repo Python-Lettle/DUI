@@ -22,16 +22,6 @@ from random import randint
 def __version__():
 	return "1.0.1"
 
-def guess():
-	an = randint(0, 10)
-	while True:
-		res = int(input("请输入要猜的数: "))
-		if res == an:
-			print("正确！")
-			return True
-		else:
-			print("错了 重新猜吧")
-
 def showTestWindow():
 	f = Frame("w")  # 参数 "w" 代表Windows系统格式
 
@@ -50,9 +40,7 @@ def showTestWindow():
 
 	dict = \
 		{
-			"guess": guess,
 			"quit": quit,
-			"g": guess,
 			"w": mainWindow.up,
 			"s": mainWindow.down,
 			"y": mainWindow.confirm
@@ -61,4 +49,6 @@ def showTestWindow():
 	listen.setDict(dict)
 	f.setListener(listen)
 
-	f.showWindow(0)
+	while True:
+		f.showWindow(0)
+		f.listener.run()

@@ -20,10 +20,15 @@ class Listener(Widget):
                 "d": print("right")
             }
         self.dict = dict
-        '''当前指针行'''
+        self.pointButton = None
 
     def setDict(self,dict):
         self.dict = dict
+    def setPointButton(self, button):
+        self.pointButton = button[1]
+    def getText(self):
+        return input("->")
+
 
     def run(self):
         if self.mode == 0:
@@ -31,5 +36,8 @@ class Listener(Widget):
             for key, func in self.dict.items():
                 if res == key:
                     func()
-
         return True
+
+    # 按钮确认键
+    def confirm(self):
+        self.pointButton.press()

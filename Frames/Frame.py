@@ -11,7 +11,7 @@ class Frame:
         self.windows = []  #储存window
         self.alert = None
         self.listener = Listener(0)
-
+        self.nowWindow = None
         #判断显示格式
         s = system.lower()
         if s == "windows" or s == "win" or s == "w":
@@ -41,7 +41,8 @@ class Frame:
             self.windows.append(window)
             index = self.windows.__len__()-1
         self.windows[index].setSystem(self.system)
-
+    def updateWindow(self, window, index):
+        self.windows[index] = window
     def delWindow(self,index):
         del self.windows[index]
 
@@ -49,7 +50,9 @@ class Frame:
         调用窗口的显示方法来切换窗口
     '''
     def showWindow(self,index):
-        self.windows[index].showWindow()
-        while True:
-            self.listener.run()
-            self.windows[index].showWindow()
+        win = self.windows[index]
+        win.showWindow()
+        self.nowWindow = index
+        pointButton = win.getPointButton()
+        if pointButton != None:
+            self.listener.setPointButton(pointButton)

@@ -27,6 +27,7 @@ class SkinMaker:
         self.HorizontalLine = skin[0][1]
         self.VerticalLine = skin[1][0]
         self.corner = skin[1][1]
+
 #控件管理器
 class Widgeter:
     def __init__(self):
@@ -36,10 +37,19 @@ class Widgeter:
         return self.widgets.copy()
     def append(self, widget):
         self.widgets.append(widget)
-
+    def get(self, index):
+        if index:
+            return self.widgets[index]
+        else:
+            return None
+    def update(self, widgetTuple):
+        i = 0
+        for w in self.widgets:
+            if w[0] == widgetTuple[0]:
+                self.widgets[i] = widgetTuple
+            i += 1
     def getList(self):
         return self.widgets
-
 
 #这是一个迭代器,使用它来迭代每一行要输出的屏幕内容
 class LineMaker:
@@ -49,7 +59,6 @@ class LineMaker:
         self.height = height         # int
         self.system = system         # int
         self.skin = SkinMaker(skin)  # 是一个皮肤类型的class
-        self.pointer = 1             # int 指针:用来指向一个可操作性类型控件
         self.widgeter = Widgeter()   # 是一个包含多个tuple(line,widget)成员的List
 
     def __iter__(self):
@@ -105,18 +114,23 @@ class LineMaker:
 
         return textThisLine
 
-    def addWidgets(self,widget):
-        self.widgeter.append(widget)
+    def addWidgets(self,widgetTuple):
+        self.widgeter.append(widgetTuple)
+    def updateWidget(self,widgetTuple):
+        self.widgeter.update(widgetTuple)
     def getWidgets(self):
         return self.widgeter.getList()
+    def getWidgeter(self):
+        return self.widgeter
 
     def setSystem(self, system):
         self.system = system
+    def setWindowIndex(self, windowIndex):
+        self.windowIndex = windowIndex
 
 class Window:
     def __init__(self,title,width=30,height=20,system=0,skin=defaultSkin4Windows):
         self.lineMaker = LineMaker(title,width,height,system,skin)  #渲染器对象   iter
-        self.pointer = None                                         #当前控件指针 int
         self.pointCondition = True
         self.buttonIndex = None           #按钮控件在 linemaker 中的位置
 
@@ -126,20 +140,18 @@ class Window:
                 如果是按钮 则将指针指向按钮并且添加控件不再改变
             '''
             widget.pointed()
-            self.pointer = line
             self.pointCondition = None
             self.buttonIndex = len(self.lineMaker.getWidgets())
-            print("sout: button add!")
         else:
             widget.system = self.lineMaker.system
         self.lineMaker.addWidgets(tuple([line,widget]))
+    def updateWidget(self, line, widget):
+        self.lineMaker.updateWidget(tuple([line,widget]))
 
-    '''
-        为窗口设置显示模式
-    '''
     def setSystem(self, system):
         self.lineMaker.setSystem(system)
-
+    def getPointButton(self):
+        return self.lineMaker.getWidgeter().get(self.buttonIndex)
     '''
         页面指针控制
     '''
@@ -164,9 +176,11 @@ class Window:
                     self.buttonIndex += 1
                     self.lineMaker.getWidgets()[self.buttonIndex][1].pointed()
                     return
+
     #按钮确认键
     def confirm(self):
-        pass
+        widgeter = self.lineMaker.getWidgeter()
+        widgeter.get(self.buttonIndex)[1].press()
 
     '''
         显示窗口
@@ -177,7 +191,6 @@ class Window:
         else:
             os.system("clear")
 
-        #使用迭代器显示
         myiter = iter(self.lineMaker)
         for text in myiter:
             print(text)
