@@ -5,7 +5,7 @@
 #fileName: Button.py
 
 from DUI.Widgets import Text
-from DUI.bin import *
+
 
 class Button(Text):
 	def __init__(self, text="", mode=False, id=None, onClick=None):

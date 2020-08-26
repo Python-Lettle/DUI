@@ -11,10 +11,10 @@ from setuptools import setup, find_packages
 
 setup(
     name = "DUI",
-    version = "0.1.0",
-    keywords = ("pip", "uitool","console"),
+    version = "1.0.1",
+    keywords = ["pip", "uitool","console"],
     description = "A console UI kit.",
-    long_description = "A console UI kit.",
+    long_description = "A console UI kit. Just for novice.",
     license = "MIT Licence",
 
     url = "https://github.com/Python-Lettle/DUI",
