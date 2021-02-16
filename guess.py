@@ -70,7 +70,8 @@ dict = \
 		"quit": quit,
 		"w": mainWindow.up,
 		"s": mainWindow.down,
-		"y": listen.confirm
+		"y": listen.confirm,
+		"\n": None
 	}
 listen.setDict(dict)
 frame.setListener(listen)

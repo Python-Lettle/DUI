@@ -145,11 +145,14 @@ class Window:
         else:
             widget.system = self.lineMaker.system
         self.lineMaker.addWidgets(tuple([line,widget]))
+        return self
     def updateWidget(self, line, widget):
         self.lineMaker.updateWidget(tuple([line,widget]))
+        return self
 
     def setSystem(self, system):
         self.lineMaker.setSystem(system)
+        return self
     def getPointButton(self):
         return self.lineMaker.getWidgeter().get(self.buttonIndex)
     '''
@@ -165,7 +168,6 @@ class Window:
                     self.buttonIndex -= 1
                     self.lineMaker.getWidgets()[self.buttonIndex][1].pointed()
                     return
-
     def down(self):
         widgets = self.lineMaker.getWidgets()
         if len(widgets) != 0:
@@ -176,7 +178,6 @@ class Window:
                     self.buttonIndex += 1
                     self.lineMaker.getWidgets()[self.buttonIndex][1].pointed()
                     return
-
     #按钮确认键
     def confirm(self):
         widgeter = self.lineMaker.getWidgeter()
@@ -194,3 +195,4 @@ class Window:
         myiter = iter(self.lineMaker)
         for text in myiter:
             print(text)
+        return self

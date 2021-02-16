@@ -71,7 +71,7 @@ pip install DUI
 from DUI import *
 f = Frame("w")  # 参数"w"代表Windows格式,详细信息请查阅文档
 mainWindow = Window("主界面") #参数为窗口标题,将写在上边框左侧
-mainWindow.addWidget(2, DUI.Text("DUI库的测试窗口", 0))
+mainWindow.addWidget(2, Text("DUI库的测试窗口", 0))
 f.addWindow(mainWindow, 0)
 f.showWindow(0)
 ```

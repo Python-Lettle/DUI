@@ -17,7 +17,8 @@ class Listener(Widget):
                 "w": print("up"),
                 "s": print("down"),
                 "a": print("left"),
-                "d": print("right")
+                "d": print("right"),
+                "\n": None
             }
         self.dict = dict
         self.pointButton = None
