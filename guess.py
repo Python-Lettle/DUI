@@ -42,7 +42,7 @@ def guess():
 			frame.addWindow(gameWindow, 1)
 			frame.showWindow(1)
 
-frame = Frame()
+frame = Frame(showFPS=True)
 
 #主界面
 mainWindow = Window("主界面")

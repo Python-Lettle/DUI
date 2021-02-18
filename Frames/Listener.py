@@ -35,6 +35,8 @@ class Listener(Widget):
         if self.mode == 0:
             res = input("->")  #按键结果
             for key, func in self.dict.items():
+                if res == "\n":
+                    return False
                 if res == key:
                     func()
         return True
