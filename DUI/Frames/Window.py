@@ -48,6 +48,7 @@ class Widgeter:
             if w[0] == widgetTuple[0]:
                 self.widgets[i] = widgetTuple
             i += 1
+
     def getList(self):
         return self.widgets
 
@@ -122,7 +123,8 @@ class LineMaker:
         return self.widgeter.getList()
     def getWidgeter(self):
         return self.widgeter
-
+    def getWidget(self,index):
+        return self.widgeter.widgets[index]
     def setSystem(self, system):
         self.system = system
     def setWindowIndex(self, windowIndex):
@@ -135,6 +137,7 @@ class Window:
         self.buttonIndex = None           #按钮控件在 linemaker 中的位置
 
     def addWidget(self,line,widget):
+        #添加一个控件
         if widget.getType() == "Button" and self.pointCondition:
             '''
                 如果是按钮 则将指针指向按钮并且添加控件不再改变
@@ -142,11 +145,17 @@ class Window:
             widget.pointed()
             self.pointCondition = None
             self.buttonIndex = len(self.lineMaker.getWidgets())
+        elif widget.getType() == "Alert":
+            widget.setWindowWidth(self.lineMaker.width)
+            widget.setSkinMaker(self.lineMaker.skin)
         else:
             widget.system = self.lineMaker.system
         self.lineMaker.addWidgets(tuple([line,widget]))
         return self
     def updateWidget(self, line, widget):
+        if widget.getType() == "Alert":
+            widget.setWindowWidth(self.lineMaker.width)
+            widget.setSkinMaker(self.lineMaker.skin)
         self.lineMaker.updateWidget(tuple([line,widget]))
         return self
 
@@ -186,13 +195,22 @@ class Window:
     '''
         显示窗口
     '''
-    def showWindow(self):
-        if self.lineMaker.system == 0:
-            os.system("cls")
-        else:
-            os.system("clear")
+    def showWindow(self,noClean=False):
 
+        # 清屏
+        if not noClean:
+            if self.lineMaker.system == 0:
+                os.system("cls")
+            else:
+                os.system("clear")
+
+        #显示控件
         myiter = iter(self.lineMaker)
-        for text in myiter:
-            print(text)
+        for text in myiter: print(text)
+
+        # 显示Alert
+        alTuple = self.lineMaker.getWidget(0)
+        if alTuple[1].getType() == "Alert":
+            alTuple[1].showAlert()
+
         return self

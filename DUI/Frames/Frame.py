@@ -8,12 +8,13 @@ from DUI.Frames.Listener import *
 import time
 
 class Frame:
-    def __init__(self,system="Windows",showFPS=False):
+    def __init__(self,system="Windows",showFPS=False,noClean=False):
         self.windows = []  #储存window
         self.alert = None
         self.listener = Listener(0)
         self.nowWindow = None
         self.showFPS = showFPS
+        self.noClean = noClean
         #判断显示格式
         s = system.lower()
         if s == "windows" or s == "win" or s == "w":
@@ -54,12 +55,14 @@ class Frame:
     def showWindow(self,index):
         if self.showFPS:
             time_start = time.time()  # 开始计时
+
         win = self.windows[index]
-        win.showWindow()
+        win.showWindow(noClean=self.noClean)
         self.nowWindow = index
         pointButton = win.getPointButton()
         if pointButton != None:
             self.listener.setPointButton(pointButton)
+
         if self.showFPS:
             time_end = time.time()  # 结束计时
             FPS = 1/(time_end - time_start)

@@ -24,7 +24,7 @@ def mainW():
 
 def guess():
 	an = randint(0,10)
-	gameWindow.showWindow()
+	frame.showWindow(1)
 	while True:
 		txt = listen.getText()
 		try:
@@ -32,13 +32,16 @@ def guess():
 		except:
 			continue
 		if res == an:
+			# 猜对
 			gameWindow.updateWidget(4, Text())
 			frame.addWindow(gameWindow, 1)
 			frame.showWindow(2)
 			frame.listener.run()
 			return
 		else:
-			gameWindow.updateWidget(4, Text("猜错了！不是"+str(res)))
+			# 猜错
+			# gameWindow.updateWidget(4, Text("猜错了！不是"+str(res)))
+			gameWindow.updateWidget(0, Alert("猜错了！不是"+str(res)))
 			frame.addWindow(gameWindow, 1)
 			frame.showWindow(1)
 
@@ -53,6 +56,7 @@ frame.addWindow(mainWindow, 0)
 
 #游戏界面
 gameWindow = Window("猜数界面")
+gameWindow.addWidget(0, Alert())
 gameWindow.addWidget(2, Text("猜猜随机出来的是几(0-10)"))
 gameWindow.addWidget(4, Text())
 frame.addWindow(gameWindow, 1)
@@ -65,15 +69,16 @@ frame.addWindow(overWindow, 2)
 
 #设置监听器
 listen = Listener(0)
-dict = \
+dic = \
 	{
 		"quit": quit,
+		"exit": quit,
 		"w": mainWindow.up,
 		"s": mainWindow.down,
 		"y": listen.confirm,
 		"\n": None
 	}
-listen.setDict(dict)
+listen.setDict(dic)
 frame.setListener(listen)
 
 #主程序开始

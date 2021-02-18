@@ -14,7 +14,6 @@
 
 from DUI.Frames.Frame import *
 from DUI.Frames.Window import *
-from DUI.Frames.Alert import *
 from DUI.Frames.Listener import *
 
 

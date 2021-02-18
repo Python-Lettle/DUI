@@ -29,15 +29,19 @@ class Text(Widget):
 		super().setType(type)
 
 	def print(self, width, system):
-		if system == 0:
-			long = width
-			b = 2
-			textLength = slen(self.text)
-		else:
-			long = width
-			textLength = slen(self.text)
-			b = 0
+		# 根据系统调整空格大小(此版本无效)
+		# if system == 0:
+		# 	long = width
+		# 	b = 2
+		# 	textLength = slen(self.text)
+		# else:
+		# 	long = width
+		# 	textLength = slen(self.text)
+		# 	b = 0
 
+		long = width
+		b = 2
+		textLength = slen(self.text)
 		if self.type == 0:
 			'''左对齐'''
 			return self.text + " " * (long - textLength - b)

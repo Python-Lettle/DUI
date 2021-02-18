@@ -7,3 +7,4 @@
 from DUI.Widgets.Widget import *
 from DUI.Widgets.Text import *
 from DUI.Widgets.Button import *
+from DUI.Widgets.Alert import *

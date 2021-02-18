@@ -82,7 +82,7 @@ f.showWindow(0)
 
 ### Frame
 
-Frame把Widget, Window, Listener, Alert集成在一起进行操作
+Frame把Widget, Window, Listener等集成在一起进行操作
 
 Frame是界面的框架，`DUI`的一切动作将通过Frame来实现，比如`showWindow`
 
@@ -90,6 +90,8 @@ Frame是界面的框架，`DUI`的一切动作将通过Frame来实现，比如`s
 |参数|类型|说明|默认值|
 |:-:|:-:|:-:|:-:|
 |system|`str`| 点击位置x坐标 |Windows|
+|showFPS|`boolean`| 是否显示帧数 |False|
+|noClean|`boolean`| 不进行清屏 |False|
 获取一个Frame对象:
 
 ```python
@@ -231,10 +233,6 @@ dict = \
 
 > 运行监听器(可以与while True一起使用)
 
-### Alert
-
-​	Alert是一个DUI界面在Window下一行的提示语。(此功能尚未完善)
-
 ### Widget
 
 ​	Widget为Window服务，可以调用Listener和Alert，最后组成一个开发者需要的组件。Widget为开发者提供基础的对象，开发者可以通过Widget对象扩展新的控件来充实自己的DUI界面。
@@ -249,6 +247,15 @@ dict = \
 | :---------: | :---: | :----------: | :----: |
 | widget_type | `str` | 标记控件类型 |        |
 |     id      | `str` |    控件id    |  None  |
+
+#### Alert(Widget)
+
+> 提示框控件,继承自Widget
+
+|     参数     | 类型  |     说明     | 默认值 |
+| :----------: | :---: | :----------: | :----: |
+|     text     | `str` | 要显示的内容 |   “”   |
+| window_width | `int` |   窗口长度   |  None  |
 
 #### Text(Widget)
 
@@ -283,3 +290,4 @@ dict = \
 | onClick | `function` | 按钮点击事件 |  None  |
 |   id    |    str     |      id      |  None  |
 
+#### 
