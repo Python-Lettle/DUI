@@ -33,7 +33,7 @@ def guess():
 			continue
 		if res == an:
 			# 猜对
-			gameWindow.updateWidget(0, Alert("猜错了！不是"+str(res)))
+			gameWindow.updateWidget(0, Alert())
 			frame.addWindow(gameWindow, 1)
 			frame.showWindow(2)
 			frame.listener.run()
