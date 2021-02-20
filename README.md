@@ -291,3 +291,13 @@ dict = \
 |   id    |    str     |      id      |  None  |
 
 #### 
+
+
+
+# 使用案例
+
+项目根目录有两个python文件: guess.py和ball.py
+
+guess.py 猜数游戏,展示了按钮、提示框等功能
+
+ball.py 弹球演示,展示了DUI目前如何绘制连续的动画(后期会有变化)
