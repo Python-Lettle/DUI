@@ -32,20 +32,36 @@ class SkinMaker:
 class Widgeter:
     def __init__(self):
         self.widgets = []
+        self.alerts = []
+        self.canvas = []
 
-    def copy(self):
-        return self.widgets.copy()
     def append(self, widget):
-        self.widgets.append(widget)
+        if widget[1].getType() == "Alert":
+            self.alerts.append(widget)
+        elif widget[1].getType() == "Canvas":
+            self.canvas.append(widget)
+        else:
+            self.widgets.append(widget)
     def get(self, index):
         if index:
             return self.widgets[index]
         else:
             return None
     def update(self, widgetTuple):
-        i = 0
+        i = 0  # 计数器
+
+        # 如果是Alert
+        if widgetTuple[1].getType() == "Alert":
+            for w in self.alerts:
+                if w[0] == widgetTuple[0]:
+                    # 如果Alert的id和当前控件相同
+                    self.alerts[i] = widgetTuple
+            i += 1
+
+        # 如果是其他控件
         for w in self.widgets:
             if w[0] == widgetTuple[0]:
+                # 如果控件的行数和当前控件相同
                 self.widgets[i] = widgetTuple
             i += 1
 
@@ -54,7 +70,9 @@ class Widgeter:
 
 #这是一个迭代器,使用它来迭代每一行要输出的屏幕内容
 class LineMaker:
-    def __init__(self,title,width=30,height=20,system=0,skin=defaultSkin4Windows):
+    def __init__(self, title, width=30, height=20, system=0, skin=None):
+        if skin is None:
+            skin = defaultSkin4Windows
         self.title = title           # str
         self.width = width           # int
         self.height = height         # int
@@ -64,7 +82,7 @@ class LineMaker:
 
     def __iter__(self):
         self.nowHeight = 1
-        self.widget_temp = self.widgeter.copy()
+        self.widget_temp = self.widgeter.widgets.copy()
         return self
 
     def __next__(self):
@@ -83,9 +101,9 @@ class LineMaker:
         elif self.system == 1:
             blank = " "
 
+        #开始绘制Widget
         if nowHeight != 1 and nowHeight != self.height:
             # 如果当前不是第一行或者最后一行
-            # print(self.widget_temp)
             for widget in self.widget_temp:
                 if widget[0] == nowHeight:         #如果控件是在这一行的
                     # 获得该行的控件
@@ -131,7 +149,9 @@ class LineMaker:
         self.windowIndex = windowIndex
 
 class Window:
-    def __init__(self,title,width=30,height=20,system=0,skin=defaultSkin4Windows):
+    def __init__(self, title, width=30, height=20, system=0, skin=None):
+        if skin is None:
+            skin = defaultSkin4Windows
         self.lineMaker = LineMaker(title,width,height,system,skin)  #渲染器对象   iter
         self.pointCondition = True
         self.buttonIndex = None           #按钮控件在 linemaker 中的位置
@@ -148,6 +168,8 @@ class Window:
         elif widget.getType() == "Alert":
             widget.setWindowWidth(self.lineMaker.width)
             widget.setSkinMaker(self.lineMaker.skin)
+        elif widget.getType() == "Canvas":
+            self = widget.setCanvas(self)
         else:
             widget.system = self.lineMaker.system
         self.lineMaker.addWidgets(tuple([line,widget]))
@@ -195,7 +217,7 @@ class Window:
     '''
         显示窗口
     '''
-    def showWindow(self,noClean=False):
+    def showWindow(self, noClean=False):
 
         # 清屏
         if not noClean:
@@ -204,13 +226,15 @@ class Window:
             else:
                 os.system("clear")
 
+        #先导入Canvas
+        for c in self.lineMaker.widgeter.canvas:
+            self = c[1].showCanvas(self)
+
         #显示控件
         myiter = iter(self.lineMaker)
         for text in myiter: print(text)
 
         # 显示Alert
-        alTuple = self.lineMaker.getWidget(0)
-        if alTuple[1].getType() == "Alert":
-            alTuple[1].showAlert()
-
+        for a in self.lineMaker.widgeter.alerts:
+            a[1].showAlert()
         return self
