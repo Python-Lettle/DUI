@@ -9,14 +9,14 @@ import time,os,platform
 
 class Frame:
     def __init__(self,system=None,showFPS=False,noClean=False,canvasMode=None):
-        self.windows = []  #储存window
+        self.windows = []  # 储存window
         self.alert = None
         self.listener = Listener(0)
         self.nowWindow = None
         self.showFPS = showFPS
         self.noClean = noClean
         self.canvasMode = canvasMode
-        #判断系统
+        # 判断系统
         if system:
             s = system.lower()
         else:

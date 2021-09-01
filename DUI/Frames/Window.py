@@ -17,8 +17,11 @@ defaultSkin4Windows = [
     "|┼|",
     "+-+"
 ]
-#皮肤构造器
+
 class SkinMaker:
+    '''
+        皮肤构造器
+    '''
     def __init__(self,skin):
         self.LeftUp = skin[0][0]
         self.RightUp = skin[0][2]
@@ -28,8 +31,11 @@ class SkinMaker:
         self.VerticalLine = skin[1][0]
         self.corner = skin[1][1]
 
-#控件管理器
+
 class Widgeter:
+    '''
+        控件管理器
+    '''
     def __init__(self):
         self.widgets = []
         self.alerts = []
@@ -68,8 +74,10 @@ class Widgeter:
     def getList(self):
         return self.widgets
 
-#这是一个迭代器,使用它来迭代每一行要输出的屏幕内容
 class LineMaker:
+    '''
+        这是一个迭代器,使用它来迭代每一行要输出的屏幕内容
+    '''
     def __init__(self, title, width=30, height=20, system=0, skin=None):
         if skin is None:
             skin = defaultSkin4Windows
@@ -149,6 +157,15 @@ class LineMaker:
         self.windowIndex = windowIndex
 
 class Window:
+    '''
+        一个窗口对象
+        @ __init__ title      窗口名称
+                   width      窗口宽度
+                   height     窗口高度
+                   system     系统类型(可以自行判断)
+                   skin       窗口皮肤
+                   canvasMode 是否采用极速渲染
+    '''
     def __init__(self, title, width=30, height=20, system=0, skin=None,canvasMode=None):
         if skin is None:
             skin = defaultSkin4Windows
