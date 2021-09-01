@@ -89,6 +89,6 @@ class Frame:
             try:
                 FPS = 1/(time_end - time_start)
             except ZeroDivisionError:
-                FPS = 5000
+                FPS = 9999
             print("FPS:",int(FPS))
 

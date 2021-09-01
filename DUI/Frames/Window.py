@@ -231,9 +231,9 @@ class Window:
         widgeter.get(self.buttonIndex)[1].press()
 
     def showWindow(self, noClean=False):
-    '''
-        显示窗口
-    '''
+        '''
+            显示窗口
+        '''
 
         # 清屏
         if not noClean:
