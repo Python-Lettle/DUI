@@ -158,7 +158,10 @@ class Window:
         self.canvasMode = canvasMode
 
     def addWidget(self,line,widget):
-        #添加一个控件
+        '''
+            添加一个控件
+        '''
+
         if widget.getType() == "Button" and self.pointCondition:
             '''
                 如果是按钮 则将指针指向按钮并且添加控件不再改变
@@ -176,6 +179,9 @@ class Window:
         self.lineMaker.addWidgets(tuple([line,widget]))
         return self
     def updateWidget(self, line, widget):
+        '''
+            更新这个控件
+        '''
         if widget.getType() == "Alert":
             widget.setWindowWidth(self.lineMaker.width)
             widget.setSkinMaker(self.lineMaker.skin)
@@ -183,12 +189,16 @@ class Window:
         return self
 
     def setSystem(self, system):
+        '''
+            设置窗口的系统环境
+        '''
         self.lineMaker.setSystem(system)
         return self
     def setCanvasMode(self, mode):
         self.canvasMode = mode
     def getPointButton(self):
         return self.lineMaker.getWidgeter().get(self.buttonIndex)
+
     '''
         页面指针控制
     '''
@@ -212,15 +222,18 @@ class Window:
                     self.buttonIndex += 1
                     self.lineMaker.getWidgets()[self.buttonIndex][1].pointed()
                     return
-    #按钮确认键
+
     def confirm(self):
+        '''
+            按钮确认键
+        '''
         widgeter = self.lineMaker.getWidgeter()
         widgeter.get(self.buttonIndex)[1].press()
 
+    def showWindow(self, noClean=False):
     '''
         显示窗口
     '''
-    def showWindow(self, noClean=False):
 
         # 清屏
         if not noClean:

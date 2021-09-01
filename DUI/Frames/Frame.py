@@ -26,22 +26,24 @@ class Frame:
         elif s == "linux" or s == "l":
             self.system = 1
 
-    '''
-        设置窗口皮肤
-    '''
+
     def setSkin(self,skinList):
+        '''
+            设置窗口皮肤
+        '''
         self.skin = skinList
 
-    '''
-        传入一个自定义的Listener
-    '''
     def setListener(self, listener):
+        '''
+            传入一个自定义的Listener
+        '''
         self.listener = listener
 
-    '''
-        添加新的窗口
-    '''
     def addWindow(self,window,index):
+        '''
+            添加一个新的窗口
+        '''
+
         try:
             self.windows[index] = window
         except:
@@ -49,15 +51,23 @@ class Frame:
             index = self.windows.__len__()-1
         self.windows[index].setSystem(self.system)
         self.windows[index].setCanvasMode(self.canvasMode)
+
     def updateWindow(self, window, index):
+        '''
+            刷新窗口
+        '''
         self.windows[index] = window
+
     def delWindow(self,index):
+        '''
+            删除一个窗口
+        '''
         del self.windows[index]
 
-    '''
-        调用窗口的显示方法来切换窗口
-    '''
     def showWindow(self,index):
+        '''
+            调用窗口的显示方法来切换窗口
+        '''
         if self.showFPS:
             time_start = time.time()  # 开始计时
         if self.nowWindow != index:
@@ -76,5 +86,9 @@ class Frame:
 
         if self.showFPS:
             time_end = time.time()  # 结束计时
-            FPS = 1/(time_end - time_start)
+            try:
+                FPS = 1/(time_end - time_start)
+            except ZeroDivisionError:
+                FPS = 5000
             print("FPS:",int(FPS))
+

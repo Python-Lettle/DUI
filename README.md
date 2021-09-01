@@ -78,6 +78,14 @@ f.showWindow(0)
 
 此时一个简单的带一行文字窗口创建成功！
 
+## 更新日志
+
+### 1.1.1
+
+增加激素渲染模式 开启方式:Frame(showFPS=True,canvasMode='s')
+
+Frame系统不再使用参数传递方式,而是自动识别(也支持传递,但将使你的程序只能在一种系统下使用)
+
 ## DUI文档
 
 ### Frame
@@ -92,13 +100,15 @@ Frame是界面的框架，`DUI`的一切动作将通过Frame来实现，比如`s
 |system|`str`| 点击位置x坐标 |Windows|
 |showFPS|`boolean`| 是否显示帧数 |False|
 |noClean|`boolean`| 不进行清屏 |False|
-|cancasMode|| 进入极速渲染模式 |None|
-获取一个Frame对象:
+|cancasMode|any| 进入极速渲染模式 |None|
 
+获取一个Frame对象:
 ```python
 from DUI import *
 frame = Frame()
 ```
+
+canvasMode 选项可传入任何非空值来启动
 
 #### frame.addWindow()
 
