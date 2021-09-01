@@ -5,18 +5,22 @@
 #fileName: Frame.py
 
 from DUI.Frames.Listener import *
-import time
+import time,os,platform
 
 class Frame:
-    def __init__(self,system="Windows",showFPS=False,noClean=False):
+    def __init__(self,system=None,showFPS=False,noClean=False,canvasMode=None):
         self.windows = []  #储存window
         self.alert = None
         self.listener = Listener(0)
         self.nowWindow = None
         self.showFPS = showFPS
         self.noClean = noClean
-        #判断显示格式
-        s = system.lower()
+        self.canvasMode = canvasMode
+        #判断系统
+        if system:
+            s = system.lower()
+        else:
+            s = platform.system().lower()
         if s == "windows" or s == "win" or s == "w":
             self.system = 0
         elif s == "linux" or s == "l":
@@ -44,6 +48,7 @@ class Frame:
             self.windows.append(window)
             index = self.windows.__len__()-1
         self.windows[index].setSystem(self.system)
+        self.windows[index].setCanvasMode(self.canvasMode)
     def updateWindow(self, window, index):
         self.windows[index] = window
     def delWindow(self,index):
@@ -55,9 +60,15 @@ class Frame:
     def showWindow(self,index):
         if self.showFPS:
             time_start = time.time()  # 开始计时
+        if self.nowWindow != index:
+            if self.system:
+                os.system('clear')
+            else:
+                os.system('cls')
 
         win = self.windows[index]
         win.showWindow(noClean=self.noClean)
+        
         self.nowWindow = index
         pointButton = win.getPointButton()
         if pointButton != None:

@@ -4,14 +4,14 @@
 # __author__ = "Lettle"
 #QQ:1071445082
 #FileName: setup.py
-#Version:1.0.0
+#Version:1.1.1
 ################################
 
 from setuptools import setup, find_packages
 
 setup(
     name = "DUI",
-    version = "1.0.1",
+    version = "1.1.1",
     keywords = ["pip", "uitool","console"],
     description = "A console UI kit.",
     long_description = "A console UI kit. Just for novice.",

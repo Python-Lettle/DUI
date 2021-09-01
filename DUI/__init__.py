@@ -20,7 +20,7 @@ from DUI.bin import *
 import time
 
 def __version__():
-	return "1.0.1"
+	return "1.1.1"
 
 def test1():
 	print("测试按钮1被点击")
@@ -33,11 +33,11 @@ def test3():
 	time.sleep(1)
 
 def showTestWindow():
-	f = Frame()
+	f = Frame('Linux')
 
 	mainWindow = Window("主界面")
 	mainWindow.addWidget(2, Text("DUI库的测试窗口", 0))
-	mainWindow.addWidget(4, Text("版本:V0.1.0", 1))
+	mainWindow.addWidget(4, Text("版本:V1.1.1", 1))
 	mainWindow.addWidget(6, Text("作者:Lettle", 1))
 	mainWindow.addWidget(8, Text("w向上s向下y确认", 1))
 	mainWindow.addWidget(8, Text("一起学习?加作者QQ:1071445082", 1))

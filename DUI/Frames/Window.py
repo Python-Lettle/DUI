@@ -149,12 +149,13 @@ class LineMaker:
         self.windowIndex = windowIndex
 
 class Window:
-    def __init__(self, title, width=30, height=20, system=0, skin=None):
+    def __init__(self, title, width=30, height=20, system=0, skin=None,canvasMode=None):
         if skin is None:
             skin = defaultSkin4Windows
         self.lineMaker = LineMaker(title,width,height,system,skin)  #渲染器对象   iter
         self.pointCondition = True
         self.buttonIndex = None           #按钮控件在 linemaker 中的位置
+        self.canvasMode = canvasMode
 
     def addWidget(self,line,widget):
         #添加一个控件
@@ -184,6 +185,8 @@ class Window:
     def setSystem(self, system):
         self.lineMaker.setSystem(system)
         return self
+    def setCanvasMode(self, mode):
+        self.canvasMode = mode
     def getPointButton(self):
         return self.lineMaker.getWidgeter().get(self.buttonIndex)
     '''
@@ -221,10 +224,14 @@ class Window:
 
         # 清屏
         if not noClean:
-            if self.lineMaker.system == 0:
-                os.system("cls")
+            if not self.canvasMode:
+                if self.lineMaker.system == 0:
+                    os.system("cls")
+                else:
+                    os.system("clear")
+
             else:
-                os.system("clear")
+                print('\033[H')
 
         #先导入Canvas
         for c in self.lineMaker.widgeter.canvas:

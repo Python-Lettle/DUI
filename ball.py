@@ -7,8 +7,8 @@
 import time, os
 from DUI import *
 #DUI 加载
-f = Frame(showFPS=True)
-mainWindow = Window("弹球", width=34, height=16)
+f = Frame(showFPS=True,canvasMode='s')
+mainWindow = Window("弹球", width=18, height=16)
 f.addWindow(mainWindow, 0)
 for i in range(1,16):
 	mainWindow.addWidget(i,Text())
@@ -69,7 +69,7 @@ def view():
 		txt = "".join(i).replace('0', "○")
 		mainWindow.updateWidget(ii,Text(txt))
 		ii += 1
-	f.showWindow(0)
+		f.showWindow(0)
 
 
 

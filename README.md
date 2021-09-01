@@ -92,6 +92,7 @@ Frame是界面的框架，`DUI`的一切动作将通过Frame来实现，比如`s
 |system|`str`| 点击位置x坐标 |Windows|
 |showFPS|`boolean`| 是否显示帧数 |False|
 |noClean|`boolean`| 不进行清屏 |False|
+|cancasMode|| 进入极速渲染模式 |None|
 获取一个Frame对象:
 
 ```python
